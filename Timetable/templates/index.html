@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-
+
+
+    width, initial-scale=1, shrink-to-fit=no">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Create a stylish landing page for your business startup and get leads for the offered services with this HTML landing page template.">
+    <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
+	<meta property="og:site_name" content="" /> <!-- website name -->
+	<meta property="og:site" content="" /> <!-- website link -->
+	<meta property="og:title" content=""/> <!-- title shown in the actual shared post -->
+	<meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
+	<meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
+	<meta property="og:url" content="" /> <!-- where do you want your post to link to -->
+	<meta property="og:type" content="article" />
+
+    <!-- Website Title -->
+    <title>Timetable | CSP | HomePage</title>
+    
+    <!-- Styles -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">
+	<link href="{% static 'css/styles.css' %}" rel="stylesheet">
+	
+	<!-- Favicon  -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'media/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'media/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'media/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'media/site.webmanifest' %}">
+</head>
+<body data-spy="scroll" data-target=".fixed-top">
+    
+    <!-- Preloader -->
+	<!-- <div class="spinner-wrapper">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div> -->
+    <!-- end of preloader -->
+    
+
+    <!-- Navigation -->
+
+    <div class="container">
+        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+          <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+            <span class="fs-4">TimeTableCSP</span>
+          </a>
+    
+          <ul class="nav nav-pills">
+            <li class="nav-item"><a href="" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="#courses" class="nav-link">Courses</a></li>
+            <li class="nav-item"><a href="#instructors" class="nav-link">Instructors</a></li>
+            <li class="nav-item"><a href="#rooms" class="nav-link">Rooms</a></li>
+            <li class="nav-item"><a href="#departments" class="nav-link">Departments</a></li>
+          </ul>
+        </header>
+      </div>
+
+
+    <!-- Header -->
+    <header id="header" class="header">
+        <div class="header-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="text-container">
+                           <h1><span class="turquoise">Time table Application</span> </h1>
+                            <p class="p-large">This Application Is Used To Create Interactive TimeTables For Universities Based On CSP Algorithms</p>
+                            <a class="btn-solid-lg page-scroll" href="{% url 'generateTimetable' %}">GENERATE TIMETABLE</a>
+							<a class="btn-solid-lg page-scroll" href="{% url 'timetables' %}">TIMETABLES LIST</a>
+
+                        </div> <!-- end of text-container -->
+                    </div> <!-- end of col -->
+                    <div class="col-lg-6">
+                        <div class="image-container">
+                            <img class="img-fluid" src="{% static 'media/calender.jpg' %}" alt="alternative">
+                            <a href="https://www.freepik.com/vectors/calendar">Calendar vector created by pch.vector - www.freepik.com</a>
+                        </div> <!-- end of image-container -->
+                    </div> <!-- end of col -->
+                </div> <!-- end of row -->
+            </div> <!-- end of container -->
+        </div> <!-- end of header-content -->
+    </header> <!-- end of header -->
+    <!-- end of header -->
+
+
+    <!-- Customers -->
+    <div class="slider-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    
+                   
+                        </div> <!-- end of swiper container -->
+                    </div> <!-- end of slider-container -->
+                    <!-- end of image slider -->
+
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of slider-1 -->
+    <!-- end of customers -->
+
+
+    <!-- Services -->
+    <div id="services" class="cards-1">
+        <div class="container">
+            <div class="row">
+               
+
+                   
+                    
+
+                   
+                    
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of cards-1 -->
+    <!-- end of services -->
+
+
+    <!-- Details 1 -->
+	<div id="courses">
+    <div class="basic-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Courses</h2>
+                        <p>You Can Easily Add courses Into Database By Just Clicking The Button Below. This Data Will Be Retrieved While Generating The Time Table.</p>
+                        <a class="btn-solid-reg " href="{% url 'courses' %}">COURSES LIST</a>
+						 <a class="btn-solid-reg " href="{% url 'addCourse' %}">ADD COURSES</a>
+
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <div class="image-container">
+                        <img class="img-fluid" src="{% static 'media/courses.jpg' %}" alt="alternative">
+                        <a href="https://www.freepik.com/vectors/school">School vector created by pch.vector - www.freepik.com</a>
+                    </div> <!-- end of image-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-1 -->
+	</div>
+    <!-- end of details 1 -->
+
+    
+    <!-- Details 2 -->
+	<div id="instructors">
+    <div class="basic-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="image-container">
+                        <img class="img-fluid" src="{% static 'media/instructor.jpg' %}" alt="alternative">
+                        <a href="https://www.freepik.com/vectors/school">School vector created by pch.vector - www.freepik.com</a>
+                    </div> <!-- end of image-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Instructors</h2>
+						<p>Professors Data Will Be Saved In The Database. You Will Be Directed To The Professor Form Where You Will Add The Information About Professor</p>
+
+                     
+                        <a class="btn-solid-reg " href="{% url 'instructors' %}">INSTRUCTOR LIST</a>
+						<a class="btn-solid-reg " href="{% url 'addInstructor' %}">ADD INSTRUCTOR</a>
+
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-2 -->
+	</div>
+    <!-- end of details 2 -->
+	
+	
+	  <!-- Details 1 -->
+	<div id="rooms">
+    <div class="basic-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Classrooms</h2>
+                        <p>In This App, You Have Facility To Add More Than One Class Rooms At A Time And It Will Generate The Suitable Timetable For You Which You Can Access Any Time In Your Account.</p>
+                        <a class="btn-solid-reg " href="{% url 'rooms' %}">ROOMS LIST</a>
+						 <a class="btn-solid-reg " href="{% url 'addRoom' %}">ADD ROOM</a>
+
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <div class="image-container">
+                        <img class="img-fluid" src="{% static 'media/room.jpg' %}" alt="alternative">
+                        <a href="https://www.freepik.com/vectors/school">School vector created by pch.vector - www.freepik.com</a>
+                    </div> <!-- end of image-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-1 -->
+    <!-- end of details 1 -->
+	</div>
+	
+	<!-- Details 2 -->
+	<div id="departments">
+    <div class="basic-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="image-container">
+                        <img class="img-fluid" src="{% static 'media/department.jpg' %}" alt="alternative">
+                        <a href="https://www.freepik.com/vectors/people">People vector created by pch.vector - www.freepik.com</a>
+                    </div> <!-- end of image-container -->
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+                    <div class="text-container">
+                        <h2>Deparments</h2>
+						<p>In This App, You Have Facility To Add More Than One Classes At A Time And It Will Generate The Suitable Timetable For You Which You Can Access Any Time In Your Account.</p>
+
+                     
+                        <a class="btn-solid-reg " href="#">DEPARTMENTS LIST</a>
+						<a class="btn-solid-reg " href="#">ADD DEPARTMENT</a>
+
+                    </div> <!-- end of text-container -->
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of basic-2 -->
+	</div>
+    <!-- end of details 2 -->
+    <div class="container">
+        <footer class="py-3 my-4">
+            <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+                <li class="nav-item"><a href="" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="#courses" class="nav-link px-2 text-muted">Courses</a></li>
+                <li class="nav-item"><a href="#instructors" class="nav-link px-2 text-muted">Instructors</a></li>
+                <li class="nav-item"><a href="#rooms" class="nav-link px-2 text-muted">Rooms</a></li>
+                <li class="nav-item"><a href="#departments" class="nav-link px-2 text-muted">Deparments</a></li>
+            </ul>
+            <p class="text-center text-muted">© 2021 Company, Inc</p>
+        </footer>
+    </div>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{% static 'js/scripts.js' %}"></script> <!-- Custom scripts -->
+</body>
+</html>

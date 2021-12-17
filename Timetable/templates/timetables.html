@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Timetable List{% endblock %}
+{% block navbar %}
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">TimeTableCSP</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'courses' %}" class="nav-link">Courses</a></li>
+        <li class="nav-item"><a href="{% url 'instructors' %}" class="nav-link">Instructors</a></li>
+        <li class="nav-item"><a href="{% url 'rooms' %}" class="nav-link">Rooms</a></li>
+        <li class="nav-item"><a href="{% url 'departments' %}" class="nav-link">Departments</a></li>
+        <li calss="nav-item"><a href="{% url 'timetables' %}" class="nav-link active" aria-current="page">Timetables</a></li>
+    </ul>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 70vh;">
+    <div class="table-responsive-lg">
+        <a href="{% url 'generateTimetable' %}" class="btn btn-success float-end my-2"></i>Generate Timetable</a>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th class="text-center" scope="col">Table ID</th>
+                    <th class="text-center" scope="col">Name</th>
+                    <th class="text-center" scope="col">Created At</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for timetable in timetables %}
+                    <tr>
+                        <td class="text-center">{{ timetable.timetable_id }}</td>
+                        <td class="text-center">{{ timetable.name }}</td>
+                        <td class="text-center">{{ timetable.timestamp }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-primary me-2" href ="{% url 'viewTimetable' timetable.timetable_id %}">View</a>
+                                <a class="btn btn-success me-2" href="{% url 'updateTimetable' timetable.timetable_id %}">Update</a>
+                                <form action="{% url 'deleteTimetable' timetable.timetable_id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

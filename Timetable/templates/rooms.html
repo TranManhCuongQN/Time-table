@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rooms List{% endblock %}
+{% block navbar %}
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">TimeTableCSP</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'courses' %}" class="nav-link">Courses</a></li>
+        <li class="nav-item"><a href="{% url 'instructors' %}" class="nav-link">Instructors</a></li>
+        <li class="nav-item"><a href="{% url 'rooms' %}" class="nav-link active" aria-current="page">Rooms</a></li>
+        <li class="nav-item"><a href="{% url 'departments' %}" class="nav-link">Departments</a></li>
+        <li calss="nav-item"><a href="{% url 'timetables' %}" class="nav-link">Timetables</a></li>
+    </ul>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 70vh;">
+    <div class="table-responsive-lg">
+        <a href="{% url 'addRoom' %}" class="btn btn-success float-end my-2"><i class="fas fa-plus me-2"></i>Add Room</a>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th class="text-center" scope="col">Room ID</th>
+                    <th class="text-center" scope="col">Name</th>
+                    <th class="text-center" scope="col">Capacity</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                    <tr>
+                        <td class="text-center">{{ room.room_id }}</td>
+                        <td class="text-center">{{ room.name }}</td>
+                        <td class="text-center">{{ room.capacity }}</td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-success me-2" href="{% url 'updateRoom' room.room_id %}">Update</a>
+                                <form action="{% url 'deleteRoom' room.room_id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Instructors List{% endblock %}
+{% block navbar %}
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">TimeTableCSP</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'courses' %}" class="nav-link">Courses</a></li>
+        <li class="nav-item"><a href="{% url 'instructors' %}" class="nav-link active" aria-current="page">Instructors</a></li>
+        <li class="nav-item"><a href="{% url 'rooms' %}" class="nav-link">Rooms</a></li>
+        <li class="nav-item"><a href="{% url 'departments' %}" class="nav-link">Departments</a></li>
+        <li calss="nav-item"><a href="{% url 'timetables' %}" class="nav-link">Timetables</a></li>
+    </ul>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 70vh;">
+    <div class="table-responsive-lg">
+        <a href="{% url 'addInstructor' %}" class="btn btn-success float-end my-2"><i class="fas fa-plus me-2"></i>Add Instructors</a>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th class="text-center">Instructor ID</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Freetimes</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for instr in instructors %}
+                    <tr>
+                        <td class="text-center">{{ instr.inst_id }}</td>
+                        <td class="text-center">{{ instr.name }}</td>
+                        <td class="text-center">
+                            {% for freetime in instr.freetime.all %}
+                                <p>{{ freetime.domains }}</p>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-success me-2" href="{% url 'updateInstructor' instr.inst_id %}">Update</a>
+                                <form action="{% url 'deleteInstructor' instr.inst_id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

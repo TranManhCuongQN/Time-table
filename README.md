@@ -15,5 +15,5 @@
     pip install -r requirements.txt
 ### Now you can run the project with this command
     python manage.py runserver
-### Then go to port `http://127.0.0.1:8000/TimeTable/`
+### Then go to port `http://127.0.0.1:8000/timetable/`
  

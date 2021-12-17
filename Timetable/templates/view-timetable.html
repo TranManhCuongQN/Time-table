@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}View Timetable{% endblock %}
+{% block navbar %}
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">TimeTableCSP</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'courses' %}" class="nav-link">Courses</a></li>
+        <li class="nav-item"><a href="{% url 'instructors' %}" class="nav-link">Instructors</a></li>
+        <li class="nav-item"><a href="{% url 'rooms' %}" class="nav-link">Rooms</a></li>
+        <li class="nav-item"><a href="{% url 'departments' %}" class="nav-link">Departments</a></li>
+        <li calss="nav-item"><a href="{% url 'timetables' %}" class="nav-link">Timetables</a></li>
+    </ul>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    {% for department in departments %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="my-3 d-flex justify-content-center">
+                    <h3>{{ department.name }}</h3>       
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr class="table-primary">
+                            <th>Time</th>
+                            <th>Monday</th>
+                            <th>Tuesday</th>
+                            <th>Wednesday</th>
+                            <th>Thursday</th>
+                            <th>Friday</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for timeslot in timeslots %}
+                            <tr>
+                                <td class="align-middle">{{ timeslot }}</td>
+                                {% for day in days %}
+                                    <td>
+                                        {% for session in sessions %}
+                                            {% if session.department.dept_id == department.dept_id %}
+                                                {% if session.timeslots == timeslot %}
+                                                    {% if session.day == day %}
+                                                        <div>
+                                                            <p>{{ session.course.name }}, {{ session.instructor.name }}, {{ session.room }}</p>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

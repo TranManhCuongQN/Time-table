@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Courses List{% endblock %}
+{% block navbar %}
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <span class="fs-4">TimeTableCSP</span>
+    </a>
+    <ul class="nav nav-pills">
+        <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li class="nav-item"><a href="{% url 'courses' %}" class="nav-link active" aria-current="page">Courses</a></li>
+        <li class="nav-item"><a href="{% url 'instructors' %}" class="nav-link">Instructors</a></li>
+        <li class="nav-item"><a href="{% url 'rooms' %}" class="nav-link">Rooms</a></li>
+        <li class="nav-item"><a href="{% url 'departments' %}" class="nav-link">Departments</a></li>
+        <li calss="nav-item"><a href="{% url 'timetables' %}" class="nav-link">Timetables</a></li>
+    </ul>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="min-height: 70vh;">
+    <div class="table-responsive-lg">
+        <a href="{% url 'addCourse' %}" class="btn btn-success float-end my-2"><i class="fas fa-plus me-2"></i>Add Course</a>
+        <table class="table table-hover">
+            <thead>
+                <tr class="table-primary">
+                    <th class="text-center" scope="col">Course ID</th>
+                    <th class="text-center" scope="col">Name</th>
+                    <th class="text-center" scope="col">Number of Students</th>
+                    <th class="text-center" scope="col">Instructor</th>
+                    <th class="text-center" scope="col">Number of lessions</th>
+                    <th scope="col"> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                    <tr>
+                        <td class="text-center">{{ course.course_id }}</td>
+                        <td class="text-center">{{ course.name }}</td>
+                        <td class="text-center">{{ course.number_of_students }}</td>
+                        <td class="text-center">{{ course.instructors }}</td>
+                        <td class="text-center">{{ course.number_of_lessions_per_week }}</td>
+                        <td>
+                            <div class="d-flex justify-content-end">
+                                <a class="btn btn-success me-2" href="{% url 'updateCourse' course.course_id %}">Update</a>
+                                <form action="{% url 'deleteCourse' course.course_id %}" method="POST">
+                                    {% csrf_token %}
+                                    <button class="btn btn-danger" type="submit">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
