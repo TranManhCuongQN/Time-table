@@ -27,7 +27,6 @@
                 <tr class="table-primary">
                     <th class="text-center">Instructor ID</th>
                     <th class="text-center">Name</th>
-                    <th class="text-center">Freetimes</th>
                     <th> </th>
                 </tr>
             </thead>
@@ -36,11 +35,6 @@
                     <tr>
                         <td class="text-center">{{ instr.inst_id }}</td>
                         <td class="text-center">{{ instr.name }}</td>
-                        <td class="text-center">
-                            {% for freetime in instr.freetime.all %}
-                                <p>{{ freetime.domains }}</p>
-                            {% endfor %}
-                        </td>
                         <td>
                             <div class="d-flex justify-content-end">
                                 <a class="btn btn-success me-2" href="{% url 'updateInstructor' instr.inst_id %}">Update</a>
