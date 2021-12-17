@@ -4,7 +4,7 @@
     pip install virtualenv
 ### Clone this project
     git clone https://github.com/HoaAyWK/Timetable-generator.git
-    cd TimeTable
+    cd TimetableGenerator
 ### Run the following command in the base directory of this project
     virtualenv env
 >you can use any name insted of **env**
