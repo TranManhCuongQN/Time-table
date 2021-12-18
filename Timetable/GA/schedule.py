@@ -9,7 +9,7 @@ from Timetable.models import Room, Department
 
 
 TIMESLOTS = []
-for i in range(50):
+for i in range(25):
     TIMESLOTS.append(i)
 
 class Class:
@@ -66,7 +66,6 @@ class Timetable(Chromosome):
                                         number_of_conflicts += 1
                             else:
                                 if fst_class.course.course_id != snd_class.course.course_id:
-                                    number_of_conflicts += 1
                                     if fst_class.course.instructors.inst_id == snd_class.course.instructors.inst_id:
                                         number_of_conflicts += 1
                     """
@@ -132,7 +131,7 @@ class Timetable(Chromosome):
                 newClass.set_timeslot(timeslots)
                 newClass.set_room(rooms[randrange(0, len(rooms))])
                 classes.append(newClass)
-        shuffle(classes)
+        #shuffle(classes)
         return Timetable(classes)
 
 
@@ -141,20 +140,22 @@ class Timetable(Chromosome):
         timetable2 = deepcopy(other)
 
         timetable_crossover = Timetable.random_instance()
- 
+
+        """
         for i in range(0, len(timetable_crossover.classes)):
             if random() > 0.5:
                 timetable_crossover.classes[i] = timetable1.classes[i]
             else:
                 timetable_crossover.classes[i] = timetable2.classes[i]
+        return deepcopy(timetable_crossover)
+        """
 
-        """
-        rand = randrange(0, len(timetable_crossover.classes))
-        timetable_crossover.classes[:rand] = timetable1.classes[:rand]
-        timetable_crossover.classes[rand:] = timetable2.classes[rand:]
+        rand = randrange(0, len(timetable_crossover.classes) - 1)
+        timetable_crossover.classes[:rand] = deepcopy(timetable1.classes[:rand])
+        timetable_crossover.classes[rand:] = deepcopy(timetable2.classes[rand:])
         return deepcopy(timetable_crossover)
-        """
-        return deepcopy(timetable_crossover)
+ 
+
     
         
 

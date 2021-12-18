@@ -51,5 +51,5 @@ class GeneticAlgorithm():
             self.mutate()
             highest = max(self.population, key=self.fitness_key)
             if highest.fitness() > best.fitness():
-                best = highest
+                best = deepcopy(highest)
         return best
