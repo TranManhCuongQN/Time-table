@@ -36,10 +36,13 @@ class DepartmentForm(forms.ModelForm):
         fields = ['name', 'courses']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control mb-2'}),
-            'courses': forms.SelectMultiple(attrs={'class': 'form-select'})
+            'courses': forms.SelectMultiple(attrs={'class': 'form-select mb-2'})
         }
 
 class TimetableForm(forms.ModelForm):
     class Meta:
         model = Timetable
         fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control mb-2'})
+        }

@@ -22,6 +22,6 @@ urlpatterns = [
     path('update-department/<str:pk>', views.updateDepartment, name='updateDepartment'),
     path('udpate-room/<str:pk>', views.updateRoom, name='updateRoom'),
     path('update-timetable/<str:pk>', views.updateTimetable, name='updateTimetable'),
-    path('generate-timetable', views.generateTimetableCSP, name='generateTimetable'),
+    path('generate-timetable', views.generateTimetableGA, name='generateTimetable'),
     path('view-timetable/<str:pk>', views.viewTimetable, name='viewTimetable'),
 ]

@@ -7,6 +7,8 @@ from .models import Course, Instructor, Room, Department, Session, Timetable
 from .CSP.csp import CSP
 from .CSP.model import Class
 from .CSP.constraints import *
+from .GA.schedule import Timetable as TB
+from .GA.genetic_algorithm import GeneticAlgorithm
 
 # Create your views here.
 
@@ -210,7 +212,49 @@ def updateTimetable(request, pk):
     
     return render(request, 'update-timetable.html', context)
 
+def generateTimetableGA(request):
+    population_size = 70
+    intitial_population = [TB.random_instance() for _ in range(population_size)]
+    ga = GeneticAlgorithm(intitial_population, 1.0, 300, 0.1, 0.7)
+    result = ga.run()
 
+    if result is not None:
+        timetable = Timetable.objects.create()
+        timeslots = [
+            "07:00 - 07:50",
+            "07:50 - 08:40",
+            "08:40 - 09:30",
+            "09:40 - 10:30",
+            "10:40 - 11:30",
+        ]
+        for session in result.classes:
+            for timeslot in session.timeslot:
+                ses = Session()
+                room_name = session.room.name
+                ses.room = Room.objects.get(name=room_name)
+                ses.department = Department.objects.get(name=session.department)
+                ses.course = Course.objects.get(name=session.course.name)
+                ses.instructor = Instructor.objects.get(name=session.course.instructors.name)
+                ses.number_of_students = session.course.number_of_students
+                ses.timetable = timetable
+                
+                no_of_timeslots_per_day = len(timeslots)
+                ses.timeslots = timeslots[timeslot % no_of_timeslots_per_day]
+
+                if timeslot < no_of_timeslots_per_day:
+                    ses.day = "Monday"
+                elif timeslot >= no_of_timeslots_per_day and timeslot < no_of_timeslots_per_day * 2:
+                    ses.day = "Tuesday"
+                elif timeslot >= no_of_timeslots_per_day * 2 and timeslot < no_of_timeslots_per_day * 3:
+                    ses.day = "Wednesday"
+                elif timeslot >= no_of_timeslots_per_day * 3 and timeslot < no_of_timeslots_per_day * 4:
+                    ses.day = "Thursday"
+                elif timeslot >= no_of_timeslots_per_day * 4 and timeslot < no_of_timeslots_per_day * 5:
+                    ses.day = "Friday"
+                ses.save()
+        return redirect('viewTimetable', pk=timetable.timetable_id)
+    else:
+        return redirect('timetables')
 
 def generateTimetableCSP(request):
     rooms = Room.objects.all()
