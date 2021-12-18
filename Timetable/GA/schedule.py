@@ -9,7 +9,7 @@ from Timetable.models import Room, Department
 
 
 TIMESLOTS = []
-for i in range(25):
+for i in range(50):
     TIMESLOTS.append(i)
 
 class Class:
@@ -141,19 +141,20 @@ class Timetable(Chromosome):
         timetable2 = deepcopy(other)
 
         timetable_crossover = Timetable.random_instance()
-        """
+ 
         for i in range(0, len(timetable_crossover.classes)):
             if random() > 0.5:
                 timetable_crossover.classes[i] = timetable1.classes[i]
             else:
                 timetable_crossover.classes[i] = timetable2.classes[i]
-        """
 
+        """
         rand = randrange(0, len(timetable_crossover.classes))
         timetable_crossover.classes[:rand] = timetable1.classes[:rand]
         timetable_crossover.classes[rand:] = timetable2.classes[rand:]
         return deepcopy(timetable_crossover)
-
+        """
+        return deepcopy(timetable_crossover)
     
         
 

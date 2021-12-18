@@ -213,9 +213,9 @@ def updateTimetable(request, pk):
     return render(request, 'update-timetable.html', context)
 
 def generateTimetableGA(request):
-    population_size = 70
+    population_size = 50
     intitial_population = [TB.random_instance() for _ in range(population_size)]
-    ga = GeneticAlgorithm(intitial_population, 1.0, 300, 0.1, 0.7)
+    ga = GeneticAlgorithm(intitial_population, 1.0, 200, 0.1, 0.7)
     result = ga.run()
 
     if result is not None:
@@ -226,6 +226,11 @@ def generateTimetableGA(request):
             "08:40 - 09:30",
             "09:40 - 10:30",
             "10:40 - 11:30",
+            "12:30 - 13:20",
+            "13:20 - 14:10",
+            "14:20 - 15:10",
+            "15:10 - 16:00",
+            "16:10 - 17:00",
         ]
         for session in result.classes:
             for timeslot in session.timeslot:
@@ -293,6 +298,11 @@ def generateTimetableCSP(request):
             "08:40 - 09:30",
             "09:40 - 10:30",
             "10:40 - 11:30",
+            "12:30", "13:20",
+            "13:20", "14:10",
+            "14:20", "15:10",
+            "15:10", "16:00",
+            "16:10", "17:00"
         ]
         for session in result.keys():
             ses = Session()
@@ -333,6 +343,11 @@ def viewTimetable(request, pk):
         "08:40 - 09:30",
         "09:40 - 10:30",
         "10:40 - 11:30",
+        "12:30 - 13:20",
+        "13:20 - 14:10",
+        "14:20 - 15:10",
+        "15:10 - 16:00",
+        "16:10 - 17:00",
     ]
     DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     context = {

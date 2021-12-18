@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Callable
 from random import choices, random
 from heapq import nlargest
@@ -26,7 +27,10 @@ class GeneticAlgorithm():
             if random() < self.crossover_chance:
                 new_population.append(parents[0].crossover(parents[1]))
             else:
-                new_population.extend(parents)                      
+                parent1 = deepcopy(parents[0])
+                parent2 = deepcopy(parents[1])
+                new_population.append(parent1)
+                new_population.append(parent2)            
         if len(new_population) > len(self.population):
             new_population.pop()
         self.population = new_population
@@ -47,5 +51,5 @@ class GeneticAlgorithm():
             self.mutate()
             highest = max(self.population, key=self.fitness_key)
             if highest.fitness() > best.fitness():
-                best= highest
+                best = highest
         return best
