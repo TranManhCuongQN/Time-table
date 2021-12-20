@@ -52,15 +52,16 @@
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
           <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
             <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-            <span class="fs-4">TimeTableCSP</span>
+            <span class="fs-4">TimeTableGenerator</span>
           </a>
     
           <ul class="nav nav-pills">
-            <li class="nav-item"><a href="" class="nav-link active" aria-current="page">Home</a></li>
-            <li class="nav-item"><a href="#courses" class="nav-link">Courses</a></li>
-            <li class="nav-item"><a href="#instructors" class="nav-link">Instructors</a></li>
-            <li class="nav-item"><a href="#rooms" class="nav-link">Rooms</a></li>
-            <li class="nav-item"><a href="#departments" class="nav-link">Departments</a></li>
+            <li class="nav-item"><a href="{% url 'home' %}" class="nav-link active" aria-current="page">Home</a></li>
+            <li class="nav-item"><a href="{% url 'courses' %}" class="nav-link">Courses</a></li>
+            <li class="nav-item"><a href="{% url 'instructors' %}" class="nav-link">Instructors</a></li>
+            <li class="nav-item"><a href="{% url 'rooms' %}" class="nav-link">Rooms</a></li>
+            <li class="nav-item"><a href="{% url 'departments' %}" class="nav-link">Departments</a></li>
+            <li calss="nav-item"><a href="{% url 'timetables' %}" class="nav-link">Timetables</a></li>
           </ul>
         </header>
       </div>
@@ -73,11 +74,13 @@
                 <div class="row">
                     <div class="col-lg-6">
                         <div class="text-container">
-                           <h1><span class="turquoise">Time table Application</span> </h1>
-                            <p class="p-large">This Application Is Used To Create Interactive TimeTables For Universities Based On CSP Algorithms</p>
-                            <a class="btn-solid-lg page-scroll" href="{% url 'generateTimetable' %}">GENERATE TIMETABLE</a>
-							<a class="btn-solid-lg page-scroll" href="{% url 'timetables' %}">TIMETABLES LIST</a>
+                            <h1><span class="turquoise">Time table Application</span> </h1>
+                            <p class="p-large">This Application Is Used To Create Interactive TimeTables For Universities</p> 
 
+                            <h5 class="text-start turquoise">Generate Timetable</h5>                                                 
+                            <a class="btn-solid-lg page-scroll" href="{% url 'generateTimetableGA' %}">Genetic Algorithm</a>
+                            <a class="btn-solid-lg page-scroll" href="{% url 'generateTimetableCSP' %}">Backtracking Search</a>
+                 
                         </div> <!-- end of text-container -->
                     </div> <!-- end of col -->
                     <div class="col-lg-6">
@@ -228,8 +231,8 @@
 						<p>In This App, You Have Facility To Add More Than One Classes At A Time And It Will Generate The Suitable Timetable For You Which You Can Access Any Time In Your Account.</p>
 
                      
-                        <a class="btn-solid-reg " href="#">DEPARTMENTS LIST</a>
-						<a class="btn-solid-reg " href="#">ADD DEPARTMENT</a>
+                        <a class="btn-solid-reg " href="{% url 'departments' %}">DEPARTMENTS LIST</a>
+						<a class="btn-solid-reg " href="{% url 'addDepartment' %}">ADD DEPARTMENT</a>
 
                     </div> <!-- end of text-container -->
                 </div> <!-- end of col -->
@@ -241,11 +244,12 @@
     <div class="container">
         <footer class="py-3 my-4">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                <li class="nav-item"><a href="" class="nav-link px-2 text-muted">Home</a></li>
-                <li class="nav-item"><a href="#courses" class="nav-link px-2 text-muted">Courses</a></li>
-                <li class="nav-item"><a href="#instructors" class="nav-link px-2 text-muted">Instructors</a></li>
-                <li class="nav-item"><a href="#rooms" class="nav-link px-2 text-muted">Rooms</a></li>
-                <li class="nav-item"><a href="#departments" class="nav-link px-2 text-muted">Deparments</a></li>
+                <li class="nav-item"><a href="{% url 'home' %}" class="nav-link px-2 text-muted">Home</a></li>
+                <li class="nav-item"><a href="{% url 'courses' %}" class="nav-link px-2 text-muted">Courses</a></li>
+                <li class="nav-item"><a href="{% url 'instructors' %}" class="nav-link px-2 text-muted">Instructors</a></li>
+                <li class="nav-item"><a href="{% url 'rooms' %}" class="nav-link px-2 text-muted">Rooms</a></li>
+                <li class="nav-item"><a href="{% url 'departments' %}" class="nav-link px-2 text-muted">Departments</a></li>
+                <li calss="nav-item"><a href="{% url 'timetables' %}" class="nav-link px-2 text-muted">Timetables</a></li>
             </ul>
             <p class="text-center text-muted">© 2021 Company, Inc</p>
         </footer>

@@ -5,7 +5,7 @@
 {% block navbar %}
 <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
     <a href="{% url 'home' %}" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
-        <span class="fs-4">TimeTableCSP</span>
+        <span class="fs-4">TimeTableGenerator</span>
     </a>
     <ul class="nav nav-pills">
         <li class="nav-item"><a href="{% url 'home' %}" class="nav-link">Home</a></li>
@@ -21,7 +21,17 @@
 {% block content %}
 <div class="container" style="min-height: 70vh;">
     <div class="table-responsive-lg">
-        <a href="{% url 'generateTimetable' %}" class="btn btn-success float-end my-2"></i>Generate Timetable</a>
+        <h5 class="text-end">Generate Timetable</h5>
+        <div class="d-flex justify-content-end my-2">          
+            <a href="{% url 'generateTimetableGA' %}" class="btn btn-success float-end my-2 me-2">
+                <i class="far fa-plus-square me-2"></i>
+                Genetic Algorithm
+            </a>
+            <a href="{% url 'generateTimetableCSP' %}" class="btn btn-success float-end my-2">
+                <i class="far fa-plus-square me-2"></i>
+                Backtracking Search
+            </a>
+        </div>        
         <table class="table table-hover">
             <thead>
                 <tr class="table-primary">
@@ -38,7 +48,7 @@
                         <td class="text-center">{{ timetable.name }}</td>
                         <td class="text-center">{{ timetable.timestamp }}</td>
                         <td>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-end">
                                 <a class="btn btn-primary me-2" href ="{% url 'viewTimetable' timetable.timetable_id %}">View</a>
                                 <a class="btn btn-success me-2" href="{% url 'updateTimetable' timetable.timetable_id %}">Update</a>
                                 <form action="{% url 'deleteTimetable' timetable.timetable_id %}" method="POST">
