@@ -1,4 +1,5 @@
 from .csp import *
+from .variable import get_class
 
 # class SameRoomTimeConstraint(Constraint):
 #     def __init__(self, variable_1, variable_2):
@@ -75,26 +76,48 @@ class SameInstuctorConstraint2(Constraint):
         if self.variable_1 not in assignment or self.variable_2 not in assignment:
             return True
 
+        class_1 = get_class(self.variable_1)
+        class_2 = get_class(self.variable_2)
+        
         # different department, same course, same instructor, same time
-        if self.variable_1.department != self.variable_2.department \
-            and self.variable_1.course.course_id == self.variable_2.course.course_id \
-            and self.variable_1.instructor.inst_id == self.variable_2.instructor.inst_id \
-            and self.variable_1.lession_no != self.variable_2.lession_no \
+        # if self.variable_1.department != self.variable_2.department \
+        #     and self.variable_1.course.course_id == self.variable_2.course.course_id \
+        #     and self.variable_1.instructor.inst_id == self.variable_2.instructor.inst_id \
+        #     and self.variable_1.lession_no != self.variable_2.lession_no \
+        #     and assignment[self.variable_1][1] == assignment[self.variable_2][1]:
+        #     return False
+
+        if class_1.department != class_2.department \
+            and class_1.course.course_id == class_2.course.course_id \
+            and class_1.instructor.inst_id == class_2.instructor.inst_id \
+            and class_1.lession_no != class_2.lession_no \
             and assignment[self.variable_1][1] == assignment[self.variable_2][1]:
             return False
             
         # same department, difference course, same instructor, same time
-        if self.variable_1.department == self.variable_2.department \
-            and self.variable_1.course.course_id != self.variable_2.course.course_id \
-            and self.variable_1.instructor.inst_id == self.variable_2.instructor.inst_id \
+        # if self.variable_1.department == self.variable_2.department \
+        #     and self.variable_1.course.course_id != self.variable_2.course.course_id \
+        #     and self.variable_1.instructor.inst_id == self.variable_2.instructor.inst_id \
+        #     and assignment[self.variable_1][1] == assignment[self.variable_2][1]:
+        #     return False
+        
+        if class_1.department == class_2.department \
+            and class_1.course.course_id != class_2.course.course_id \
+            and class_1.instructor.inst_id == class_2.instructor.inst_id \
             and assignment[self.variable_1][1] == assignment[self.variable_2][1]:
             return False
-            
 
         # difference department, difference course, same instructor, same time
-        if self.variable_1.department != self.variable_2.department \
-            and self.variable_1.course.course_id != self.variable_2.course.course_id \
-            and self.variable_1.instructor.inst_id == self.variable_2.instructor.inst_id \
+        # if self.variable_1.department != self.variable_2.department \
+        #     and self.variable_1.course.course_id != self.variable_2.course.course_id \
+        #     and self.variable_1.instructor.inst_id == self.variable_2.instructor.inst_id \
+        #     and assignment[self.variable_1][1] == assignment[self.variable_2][1]:
+        #     return False
+        # return True
+
+        if class_1.department != class_2.department \
+            and class_1.course.course_id != class_2.course.course_id \
+            and class_1.instructor.inst_id == class_2.instructor.inst_id \
             and assignment[self.variable_1][1] == assignment[self.variable_2][1]:
             return False
         return True
@@ -109,9 +132,19 @@ class InOneSessionConstraint(Constraint):
         if self.variable_1 not in assignment or self.variable_2 not in assignment:
             return True
         
+        class_1 = get_class(self.variable_1)
+        class_2 = get_class(self.variable_2)
+
         start = assignment[self.variable_1][1] % 5
-        if self.variable_1.lession_no == 1:
-            calc_end = assignment[self.variable_1][1] + self.variable_1.course.number_of_lessions_per_week - 1   
+        # if self.variable_1.lession_no == 1:
+        #     calc_end = assignment[self.variable_1][1] + self.variable_1.course.number_of_lessions_per_week - 1   
+        #     end_in_session = calc_end % 5
+        #     if start > end_in_session:
+        #         return False
+        #     return True
+
+        if class_1.lession_no == 1:
+            calc_end = assignment[self.variable_1][1] + class_1.course.number_of_lessions_per_week - 1   
             end_in_session = calc_end % 5
             if start > end_in_session:
                 return False
@@ -142,10 +175,13 @@ class ConnectedLessionsConstraint(Constraint):
         if self.variable_1 not in assignment or self.variable_2 not in assignment:
             return True
 
-        if self.variable_1.department != self.variable_2.department:
+        class_1 = get_class(self.variable_1)
+        class_2 = get_class(self.variable_2)
+
+        if class_1.department != class_2.department:
             return False
         else:
-            if self.variable_1.course.course_id != self.variable_2.course.course_id:
+            if class_1.course.course_id != class_2.course.course_id:
                 return False
             else:
                 period = assignment[self.variable_2][1] - assignment[self.variable_1][1]
