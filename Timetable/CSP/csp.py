@@ -51,6 +51,11 @@ class CSP():
         removals = [(var, val) for val in self.curr_domains[var] if val != value]
         self.curr_domains[var] = [value]
         return removals
+    
+    def prune(self, var, value, removals):
+        self.curr_domains[var].remove(value)
+        if removals is not None:
+            removals.append((var, value))
 
     def restore(self, removals):
         for var, val in removals:
@@ -77,14 +82,14 @@ class CSP():
         self.domains_copy()
         for var in self.variables:
             if var != variable and var not in assignment:                
-                for val in self.curr_domains:
-                    suppose_assignment = { variable: value }
+                for val in self.curr_domains[var]:
+                    suppose_assignment = { variable: value, var: val }
                     if not self.consistent(var, suppose_assignment):
                         self.prune(var, val, removals)
                 if not self.curr_domains[var]:
                     return False
         return True
-
+         
     
     def backtracking(self, assignment = {}):
         if self.is_complete(assignment):

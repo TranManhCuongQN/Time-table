@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from itertools import combinations
+from time import time
 
 from .forms import *
 from .models import Course, Instructor, Room, Department, Session, Timetable
@@ -10,6 +11,7 @@ from .CSP.model import Class
 from .CSP.constraints import *
 from .GA.schedule import Timetable as TB
 from .GA.genetic_algorithm import GeneticAlgorithm
+
 
 # Create your views here.
 
@@ -329,9 +331,12 @@ def generateTimetableCSP(request):
 
                 scheduler.add_constraint(InOneSessionConstraint(VARIABLES[i + j], VARIABLES[i + j + 1]))
                 #scheduler.add_constraint(InOneSessionConstraint(classes[i + j], classes[i + j + 1]))
-
+    start = time()
     result = scheduler.backtracking2()
+    end = time()
 
+    time_to_create = end - start
+    
     if result is not None:
         timetable = Timetable.objects.create()
         # timeslots = [
