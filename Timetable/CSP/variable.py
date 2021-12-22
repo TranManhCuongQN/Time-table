@@ -10,8 +10,6 @@ for department in departments:
             cl = Class(department.name, course, None, None, None, i + 1)
             classes.append(cl)
 
-print(len(classes))
-
 def get_class(idx):
     return classes[idx]
 

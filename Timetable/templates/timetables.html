@@ -38,6 +38,8 @@
                     <th class="text-center" scope="col">Table ID</th>
                     <th class="text-center" scope="col">Name</th>
                     <th class="text-center" scope="col">Created At</th>
+                    <th class="text-center" scope="col">Time to create</th>
+                    <th class="text-center" scope="col">Algorithm</th>
                     <th scope="col"> </th>
                 </tr>
             </thead>
@@ -47,6 +49,8 @@
                         <td class="text-center">{{ timetable.timetable_id }}</td>
                         <td class="text-center">{{ timetable.name }}</td>
                         <td class="text-center">{{ timetable.timestamp }}</td>
+                        <td class="text-center">{{ timetable.time_to_create }}</td>
+                        <td class="text-center">{{ timetable.algorithm }}</td>
                         <td>
                             <div class="d-flex justify-content-end">
                                 <a class="btn btn-primary me-2" href ="{% url 'viewTimetable' timetable.timetable_id %}">View</a>

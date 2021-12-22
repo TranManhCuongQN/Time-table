@@ -37,9 +37,6 @@ class Class:
 class Timetable(Chromosome):
     def __init__(self, classes):
         self.classes = classes
-        self.fitness_value = 0
-
-    def get_classes(self): return self.classes
 
     def fitness(self):
         number_of_conflicts = 0
@@ -67,51 +64,8 @@ class Timetable(Chromosome):
                             else:
                                 if fst_class.course.course_id != snd_class.course.course_id:
                                     if fst_class.course.instructors.inst_id == snd_class.course.instructors.inst_id:
-                                        number_of_conflicts += 1
-                    """
-                    # difference department, same course, same time, same instructor
-                    if fst_class.department != snd_class.department \
-                        and fst_class.course.course_id == snd_class.course.course_id \
-                        and fst_class.timeslot == snd_class.timeslot \
-                        and fst_class.course.instructors.inst_id == snd_class.course.instructors.inst_id:
-                        number_of_conflicts += 1
-
-                    # difference department, difference course, same time, same instructor
-                    if fst_class.department != snd_class.department \
-                        and fst_class.course.course_id != snd_class.course.course_id \
-                        and fst_class.timeslot == snd_class.timeslot \
-                        and fst_class.course.instructors.inst_id == snd_class.course.instructors.inst_id:
-                        number_of_conflicts += 1
-
-                    # same department, difference course, same time, same instructor
-                    if fst_class.department == snd_class.department \
-                        and fst_class.course.course_id != snd_class.course.course_id \
-                        and fst_class.timeslot == snd_class.timeslot \
-                        and fst_class.course.instructors.inst_id == snd_class.course.instructors.inst_id:
-                        number_of_conflicts += 1
-                    
-                    period = abs(fst_class.timeslot - snd_class.timeslot)
-                    """
-                  
-
+                                        number_of_conflicts += 1               
         return 1 / (1.0 * number_of_conflicts + 1)
-    """
-    @classmethod
-    def random_instance(cls):
-        classes = []
-        rooms = Room.objects.all()
-        departments = Department.objects.all()
-        for dept in departments:
-            courses = dept.courses.all()
-            for course in courses:
-                for lession in range(course.number_of_lessions_per_week):
-                    newClass = Class(dept.name, course, lession)
-                    newClass.set_timeslot(TIMESLOTS[randrange(0, len(TIMESLOTS))])
-                    newClass.set_room(rooms[randrange(0, len(rooms))])
-                    classes.append(newClass)
-        shuffle(classes)
-        return Timetable(classes)
-    """
 
     @classmethod
     def random_instance(cls):
@@ -123,13 +77,21 @@ class Timetable(Chromosome):
             for course in courses:               
                 newClass = Class(dept.name, course, 0)
                 timeslots = []
-                rand = randrange(0, len(TIMESLOTS) - 1)
-                while rand + course.number_of_lessions_per_week >= len(TIMESLOTS):
+                rand = randrange(0, len(TIMESLOTS) - 1)     
+                start = rand % 5
+                end = (rand + course.number_of_lessions_per_week - 1) % 5          
+                while start >= end:
                     rand = randrange(0, len(TIMESLOTS))
+                    if rand + course.number_of_lessions_per_week < 24:                       
+                        start = rand % 5
+                        end = (rand + course.number_of_lessions_per_week - 1) % 5                               
                 for i in range(course.number_of_lessions_per_week):
                     timeslots.append(rand + i)
                 newClass.set_timeslot(timeslots)
-                newClass.set_room(rooms[randrange(0, len(rooms))])
+                random_room = randrange(0, len(rooms))
+                while rooms[random_room].capacity < course.number_of_students:
+                    random_room = randrange(0, len(rooms))
+                newClass.set_room(rooms[random_room])
                 classes.append(newClass)
         #shuffle(classes)
         return Timetable(classes)
@@ -153,11 +115,7 @@ class Timetable(Chromosome):
         rand = randrange(0, len(timetable_crossover.classes) - 1)
         timetable_crossover.classes[:rand] = deepcopy(timetable1.classes[:rand])
         timetable_crossover.classes[rand:] = deepcopy(timetable2.classes[rand:])
-        return deepcopy(timetable_crossover)
- 
-
-    
-        
+        return deepcopy(timetable_crossover)    
 
     def mutate(self):
         rooms = Room.objects.all()

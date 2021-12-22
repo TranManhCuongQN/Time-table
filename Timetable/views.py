@@ -224,10 +224,17 @@ def generateTimetableGA(request):
     population_size = 50
     intitial_population = [TB.random_instance() for _ in range(population_size)]
     ga = GeneticAlgorithm(intitial_population, 1.0, 500, 0.05, 0.7)
+
+    start = time()
     result = ga.run()
+    end = time()
 
     if result is not None:
-        timetable = Timetable.objects.create()
+        timetable = Timetable()
+        time_to_create = end - start
+        timetable.time_to_create = time_to_create
+        timetable.algorithm = "Genetic algorithm"
+        timetable.save()
         # timeslots = [
         #     "07:00 - 07:50",
         #     "07:50 - 08:40",
@@ -312,10 +319,8 @@ def generateTimetableCSP(request):
     
     for i in range(len(classes)):
         for j in range(i + 1, len(classes)):
-            scheduler.add_constraint(SameRoomTimeConstraint2(VARIABLES[i], VARIABLES[j]))
-            scheduler.add_constraint(SameInstuctorConstraint2(VARIABLES[i], VARIABLES[j]))
-            # scheduler.add_constraint(SameRoomTimeConstraint2(classes[i], classes[j]))
-            # scheduler.add_constraint(SameInstuctorConstraint2(classes[i], classes[j]))
+            scheduler.add_constraint(SameRoomTimeConstraint(VARIABLES[i], VARIABLES[j]))
+            scheduler.add_constraint(SameInstuctorConstraint(VARIABLES[i], VARIABLES[j]))          
     
     for i in range(len(classes) - 1):        
         if classes[i].department == classes[i + 1].department \
@@ -335,10 +340,14 @@ def generateTimetableCSP(request):
     result = scheduler.backtracking2()
     end = time()
 
-    time_to_create = end - start
     
+
     if result is not None:
-        timetable = Timetable.objects.create()
+        timetable = Timetable()
+        time_to_create = end - start
+        timetable.time_to_create = time_to_create
+        timetable.algorithm = "Backtracking"
+        timetable.save()
         # timeslots = [
         #     "07:00 - 07:50",
         #     "07:50 - 08:40",
@@ -465,6 +474,7 @@ def viewTimetable(request, pk):
     ]
     DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
     context = {
+        'timetable': timetable,
         'sessions': sessions,
         'departments': depts,
         'days': DAYS,

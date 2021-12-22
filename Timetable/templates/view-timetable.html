@@ -20,6 +20,10 @@
 
 {% block content %}
 <div class="container">
+    <div>
+        <h5>Algorithm: {{ timetable.algorithm }}</h5>
+        <h5>Time to create: {{ timetable.time_to_create }}</h5>
+    </div>
     {% for department in departments %}
         <div class="row">
             <div class="col-md-12">

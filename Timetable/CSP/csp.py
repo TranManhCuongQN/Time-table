@@ -106,7 +106,7 @@ class CSP():
         return None 
    
 
-    def backtracking2(self, assignment = {}, select_unassigned_value=first_unassigned_value, inferences=forward_checking):
+    def backtracking2(self, assignment = {}, select_unassigned_value=first_unassigned_value, inferences=no_inference):
         if self.is_complete(assignment):
             return assignment
         var = select_unassigned_value(self, assignment)       
