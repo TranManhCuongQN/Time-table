@@ -42,9 +42,6 @@ class Timetable(Chromosome):
         number_of_conflicts = 0
         for i in range(len(self.classes)):
 
-            # number of students langer than room capacity
-            if self.classes[i].course.number_of_students > self.classes[i].room.capacity:
-                number_of_conflicts += 1
             for j in range(len(self.classes)):
                 if j > i:                    
                     fst_class = self.classes[i]
@@ -64,7 +61,7 @@ class Timetable(Chromosome):
                             else:
                                 if fst_class.course.course_id != snd_class.course.course_id:
                                     if fst_class.course.instructors.inst_id == snd_class.course.instructors.inst_id:
-                                        number_of_conflicts += 1               
+                                        number_of_conflicts += 1          
         return 1 / (1.0 * number_of_conflicts + 1)
 
     @classmethod

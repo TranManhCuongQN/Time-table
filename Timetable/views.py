@@ -6,7 +6,7 @@ from time import time
 from .forms import *
 from .models import Course, Instructor, Room, Department, Session, Timetable
 from .CSP.csp import CSP
-from .CSP.variable import VARIABLES
+from .CSP.variable import VARIABLES, get_class, classes
 from .CSP.model import Class
 from .CSP.constraints import *
 from .GA.schedule import Timetable as TB
@@ -283,65 +283,43 @@ def generateTimetableGA(request):
     else:
         return redirect('timetables')
 
-def generateTimetableCSP(request):
-    rooms = Room.objects.all()
-    departments = Department.objects.all()
-
-    # init variables
-    classes = []
-    for department in departments:
-        for course in department.courses.all():
-            for i in range(course.number_of_lessions_per_week):            
-                cl = Class(department.name, course, None, None, None, i + 1)
-                classes.append(cl)
+def generateTimetableCSP(request):       
     timeslots = []
     for i in range(25):
-        timeslots.append(i)
-
-    
-    lst_room = [room for room in rooms]
-    lst_room.sort(key=lambda r: r.capacity)
+        timeslots.append(i) 
 
     # set domain for each variable
     domains = {}    
-    for i in range(len(classes)):      
-        room_with_timeslot = [] 
-        for room in lst_room:            
-            if room.capacity >= classes[i].number_of_students:
-                for timeslot in timeslots:
-                    value = (room, timeslot)
-                    room_with_timeslot.append(value)
-        shuffle(room_with_timeslot)
-        domains[i] = room_with_timeslot    
+    for i in range(len(classes)):  
+        values = []    
+        for timeslot in timeslots:
+            values.append(timeslot)
+        #shuffle(values)
+        domains[i] = values
+    for cl in classes:
+        print(cl.course.name, cl.room.name)
 
     scheduler = CSP(VARIABLES, domains)
-
     
+    for i in range(len(classes)):
+        scheduler.add_constraint(InOneSessionConstraint(VARIABLES[i]))
+
     for i in range(len(classes)):
         for j in range(i + 1, len(classes)):
-            scheduler.add_constraint(SameRoomTimeConstraint(VARIABLES[i], VARIABLES[j]))
-            scheduler.add_constraint(SameInstuctorConstraint(VARIABLES[i], VARIABLES[j]))          
-    
-    for i in range(len(classes) - 1):        
-        if classes[i].department == classes[i + 1].department \
-            and classes[i].course.course_id == classes[i + 1].course.course_id \
-            and classes[i].lession_no < classes[i].course.number_of_lessions_per_week:
-
-            scheduler.add_constraint(ConnectedLessionsConstraint(VARIABLES[i], VARIABLES[i + 1]))
-            #scheduler.add_constraint(ConnectedLessionsConstraint(classes[i], classes[i + 1]))
-
-    for i in range(len(classes)):
-        if classes[i].lession_no == 1:
-            for j in range(classes[i].course.number_of_lessions_per_week - 1):
-
-                scheduler.add_constraint(InOneSessionConstraint(VARIABLES[i + j], VARIABLES[i + j + 1]))
-                #scheduler.add_constraint(InOneSessionConstraint(classes[i + j], classes[i + j + 1]))
+            if classes[i].room.name == classes[j].room.name:
+                scheduler.add_constraint(SameRoomTimeConstraint(VARIABLES[i], VARIABLES[j]))
+                scheduler.add_neighbor(VARIABLES[i], VARIABLES[j])
+                scheduler.add_neighbor(VARIABLES[j], VARIABLES[i])
+            if classes[i].course.instructors.inst_id == classes[j].course.instructors.inst_id:
+                scheduler.add_constraint(SameInstuctorConstraint(VARIABLES[i], VARIABLES[j]))
+                scheduler.add_neighbor(VARIABLES[i], VARIABLES[j])
+                scheduler.add_neighbor(VARIABLES[j], VARIABLES[i])
+           
+    scheduler.domains_copy()
     start = time()
-    result = scheduler.backtracking2()
+    result = scheduler.backtracking()
     end = time()
-
     
-
     if result is not None:
         timetable = Timetable()
         time_to_create = end - start
@@ -366,83 +344,34 @@ def generateTimetableCSP(request):
             "08:40 - 09:30",
             "09:40 - 10:30",
             "10:40 - 11:30",            
-        ]
-        # for session in result.keys():
-        #     ses = Session()
-        #     room_name = result[session][0].name
-        #     ses.room = Room.objects.get(name=room_name)
-        #     ses.department = Department.objects.get(name=session.department)
-        #     ses.course = Course.objects.get(name=session.course.name)
-        #     ses.instructor = Instructor.objects.get(name=session.instructor)
-        #     ses.number_of_students = session.number_of_students
-        #     ses.timetable = timetable
-            
-        #     no_of_timeslots_per_day = len(timeslots)
-        #     ses.timeslots = timeslots[result[session][1] % no_of_timeslots_per_day]
-
-        #     if result[session][1] < no_of_timeslots_per_day:
-        #         ses.day = "Monday"
-        #     elif result[session][1] >= no_of_timeslots_per_day and result[session][1] < no_of_timeslots_per_day * 2:
-        #         ses.day = "Tuesday"
-        #     elif result[session][1] >= no_of_timeslots_per_day * 2 and result[session][1] < no_of_timeslots_per_day * 3:
-        #         ses.day = "Wednesday"
-        #     elif result[session][1] >= no_of_timeslots_per_day * 3 and result[session][1] < no_of_timeslots_per_day * 4:
-        #         ses.day = "Thursday"
-        #     elif result[session][1] >= no_of_timeslots_per_day * 4 and result[session][1] < no_of_timeslots_per_day * 5:
-        #         ses.day = "Friday"
-        #     ses.save()
+        ]       
 
         for i in result.keys():
             session = get_class(i)
-            ses = Session()
-            room_name = result[i][0].name
-            ses.room = Room.objects.get(name=room_name)
-            ses.department = Department.objects.get(name=session.department)
-            ses.course = Course.objects.get(name=session.course.name)
-            ses.instructor = Instructor.objects.get(name=session.instructor)
-            ses.number_of_students = session.number_of_students
-            ses.timetable = timetable
-            
-            no_of_timeslots_per_day = len(timeslots)
-            ses.timeslots = timeslots[result[i][1] % no_of_timeslots_per_day]
-
-            if result[i][1] < no_of_timeslots_per_day:
-                ses.day = "Monday"
-            elif result[i][1] >= no_of_timeslots_per_day and result[i][1] < no_of_timeslots_per_day * 2:
-                ses.day = "Tuesday"
-            elif result[i][1] >= no_of_timeslots_per_day * 2 and result[i][1] < no_of_timeslots_per_day * 3:
-                ses.day = "Wednesday"
-            elif result[i][1] >= no_of_timeslots_per_day * 3 and result[i][1] < no_of_timeslots_per_day * 4:
-                ses.day = "Thursday"
-            elif result[i][1] >= no_of_timeslots_per_day * 4 and result[i][1] < no_of_timeslots_per_day * 5:
-                ses.day = "Friday"
-            ses.save()
-
-        # for session in result.keys():
-        #     for timeslot in result[session][1]:
-        #         ses = Session()
-        #         room_name = result[session][0].name
-        #         ses.room = Room.objects.get(name=room_name)
-        #         ses.department = Department.objects.get(name=session.department)
-        #         ses.course = Course.objects.get(name=session.course.name)
-        #         ses.instructor = Instructor.objects.get(name=session.instructor)
-        #         ses.number_of_students = session.number_of_students
-        #         ses.timetable = timetable
+            for timeslot in result[i]:
+                ses = Session()
+                room_name = session.room.name
+                ses.room = Room.objects.get(name=room_name)
+                ses.department = Department.objects.get(name=session.department)
+                ses.course = Course.objects.get(name=session.course.name)
+                ses.instructor = Instructor.objects.get(name=session.instructor)
+                ses.number_of_students = session.number_of_students
+                ses.timetable = timetable
                 
-        #         no_of_timeslots_per_day = len(timeslots)
-        #         ses.timeslots = timeslots[timeslot % no_of_timeslots_per_day]
+                no_of_timeslots_per_day = len(timeslots)
+                ses.timeslots = timeslots[timeslot % no_of_timeslots_per_day]
 
-        #         if timeslot < no_of_timeslots_per_day:
-        #             ses.day = "Monday"
-        #         elif timeslot >= no_of_timeslots_per_day and timeslot < no_of_timeslots_per_day * 2:
-        #             ses.day = "Tuesday"
-        #         elif timeslot >= no_of_timeslots_per_day * 2 and timeslot < no_of_timeslots_per_day * 3:
-        #             ses.day = "Wednesday"
-        #         elif timeslot >= no_of_timeslots_per_day * 3 and timeslot < no_of_timeslots_per_day * 4:
-        #             ses.day = "Thursday"
-        #         elif timeslot >= no_of_timeslots_per_day * 4 and timeslot < no_of_timeslots_per_day * 5:
-        #             ses.day = "Friday"
-        #         ses.save()
+                if timeslot < no_of_timeslots_per_day:
+                    ses.day = "Monday"
+                elif timeslot >= no_of_timeslots_per_day and timeslot < no_of_timeslots_per_day * 2:
+                    ses.day = "Tuesday"
+                elif timeslot >= no_of_timeslots_per_day * 2 and timeslot < no_of_timeslots_per_day * 3:
+                    ses.day = "Wednesday"
+                elif timeslot >= no_of_timeslots_per_day * 3 and timeslot < no_of_timeslots_per_day * 4:
+                    ses.day = "Thursday"
+                elif timeslot >= no_of_timeslots_per_day * 4 and timeslot < no_of_timeslots_per_day * 5:
+                    ses.day = "Friday"
+                ses.save()
         return redirect('viewTimetable', pk=timetable.timetable_id)
     else:
         return render(request, 'failure.html', {})
