@@ -221,9 +221,9 @@ def updateTimetable(request, pk):
     return render(request, 'update-timetable.html', context)
 
 def generateTimetableGA(request):
-    population_size = 50
+    population_size = 20
     intitial_population = [TB.random_instance() for _ in range(population_size)]
-    ga = GeneticAlgorithm(intitial_population, 1.0, 500, 0.05, 0.7)
+    ga = GeneticAlgorithm(intitial_population, 1.0, 100, 0.05, 0.7)
 
     start = time()
     result = ga.run()

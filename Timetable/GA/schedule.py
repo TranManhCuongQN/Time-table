@@ -109,7 +109,7 @@ class Timetable(Chromosome):
         return deepcopy(timetable_crossover)
         """
 
-        rand = randrange(0, len(timetable_crossover.classes) - 1)
+        rand = randrange(0, len(timetable_crossover.classes))
         timetable_crossover.classes[:rand] = deepcopy(timetable1.classes[:rand])
         timetable_crossover.classes[rand:] = deepcopy(timetable2.classes[rand:])
         return deepcopy(timetable_crossover)    
@@ -117,7 +117,10 @@ class Timetable(Chromosome):
     def mutate(self):
         rooms = Room.objects.all()
         for i in range(0, len(self.classes)):
-            self.classes[i].set_room(rooms[randrange(0, len(rooms))])
+            random_room = randrange(0, len(rooms))
+            while rooms[random_room].capacity < self.classes[i].course.number_of_students:
+                random_room = randrange(0, len(rooms))
+            self.classes[i].set_room(rooms[random_room])
             timeslots = []
             rand = randrange(0, len(TIMESLOTS) - 1)
             while rand + self.classes[i].course.number_of_lessions_per_week >= len(TIMESLOTS):

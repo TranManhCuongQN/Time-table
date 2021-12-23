@@ -165,7 +165,7 @@ class CSP():
         return constraint_propagation(self, {(X, var) for X in self.neighbors[var]}, removals)
            
 
-    def backtracking(self, assignment = {}, select_unassigned_value=first_unassigned_value, inferences=no_inference):
+    def backtracking(self, assignment = {}, select_unassigned_value=first_unassigned_value, inferences=mac):
         if self.is_complete(assignment):
             return assignment
         var = select_unassigned_value(self, assignment)       
