@@ -5,7 +5,7 @@ from Timetable.CSP.model import Class
 departments = Department.objects.all()
 rooms = Room.objects.all()
 lst_room = [room for room in rooms]
-#lst_room.sort(key=lambda r: r.capacity)
+# lst_room.sort(key=lambda r: r.capacity)
 #shuffle(lst_room)
 # init variables
 classes = []
